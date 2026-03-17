@@ -40,6 +40,10 @@ jobs:
         run: |
           cd ~/qmk_firmware
           make replicazeron24k:default
+          - name: Buscar firmware generado
+        run: |
+          find ~/qmk_firmware/.build -name "*.bin" -o -name "*.hex" -o -name "*.uf2" 2>/dev/null
+          ls ~/qmk_firmware/.build/ || echo "Carpeta .build vacía"
 
       - name: Subir firmware
         uses: actions/upload-artifact@v4
