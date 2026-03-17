@@ -35,6 +35,12 @@ jobs:
           cp replicazeron24k.h     ~/qmk_firmware/keyboards/replicazeron24k/
           cp info.json             ~/qmk_firmware/keyboards/replicazeron24k/
           cp keymaps/default/keymap.c ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
+          
+      - name: Verificar estructura
+        run: |
+          ls ~/qmk_firmware/keyboards/replicazeron24k/
+          ls ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
+          cat ~/qmk_firmware/keyboards/replicazeron24k/info.json
 
       - name: Compilar firmware con make
         run: |
