@@ -42,6 +42,7 @@ jobs:
           cp info.json                    ~/qmk_firmware/keyboards/replicazeron24k/
           cp keymaps/default/keymap.c     ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
           cp mcuconf.h ~/qmk_firmware/keyboards/replicazeron24k/
+          cp halconf.h ~/qmk_firmware/keyboards/replicazeron24k/
 
       - name: Compilar firmware
         run: |
