@@ -1,5 +1,4 @@
 #pragma once
-#include "config_common.h"
 
 // =============================================================
 //  REPLICAZERON 24K - config.h
