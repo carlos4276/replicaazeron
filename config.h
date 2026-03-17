@@ -56,10 +56,6 @@
 #define LED_1_PIN PAL_LINE(GPIOC, 13)
 #define LED_2_PIN PAL_LINE(GPIOB, 15)
 
-// --- JOYSTICK QMK ---
-#define JOYSTICK_AXES_COUNT   2
-#define JOYSTICK_BUTTON_COUNT 1
-
 // --- USB ---
 #define VENDOR_ID    0xFEED
 #define PRODUCT_ID   0x4276
