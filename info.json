@@ -1,0 +1,36 @@
+{
+    "keyboard_name": "replicazeron24k",
+    "manufacturer": "Carlos4276",
+    "url": "",
+    "maintainer": "carlos4276",
+    "usb": {
+        "vid": "0xFEED",
+        "pid": "0x4276",
+        "device_version": "0.0.1"
+    },
+    "processor": "STM32F103",
+    "bootloader": "stm32duino",
+    "features": {
+        "bootmagic": true,
+        "mousekey": true,
+        "extrakey": true,
+        "nkro": true
+    },
+    "matrix_pins": {
+        "direct": [
+            ["A0","A1","A2","A3","A4","A5","A9","A10","A11","B0","B1","B2","B3","B4","B5","B6","B7","B8","B9","B10","B11","B12","B13","B14"]
+        ]
+    },
+    "layouts": {
+        "LAYOUT_direct": {
+            "layout": [
+                {"matrix":[0,0],"x":0,"y":0},{"matrix":[0,1],"x":1,"y":0},{"matrix":[0,2],"x":2,"y":0},{"matrix":[0,3],"x":3,"y":0},{"matrix":[0,4],"x":4,"y":0},
+                {"matrix":[0,5],"x":5,"y":0},{"matrix":[0,6],"x":6,"y":0},{"matrix":[0,7],"x":7,"y":0},{"matrix":[0,8],"x":8,"y":0},
+                {"matrix":[0,9],"x":9,"y":0},{"matrix":[0,10],"x":10,"y":0},{"matrix":[0,11],"x":11,"y":0},{"matrix":[0,12],"x":12,"y":0},
+                {"matrix":[0,13],"x":13,"y":0},{"matrix":[0,14],"x":14,"y":0},{"matrix":[0,15],"x":15,"y":0},{"matrix":[0,16],"x":16,"y":0},
+                {"matrix":[0,17],"x":17,"y":0},{"matrix":[0,18],"x":18,"y":0},{"matrix":[0,19],"x":19,"y":0},{"matrix":[0,20],"x":20,"y":0},{"matrix":[0,21],"x":21,"y":0},
+                {"matrix":[0,22],"x":22,"y":0},{"matrix":[0,23],"x":23,"y":0}
+            ]
+        }
+    }
+}
