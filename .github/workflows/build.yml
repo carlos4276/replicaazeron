@@ -16,40 +16,38 @@ jobs:
       - name: Instalar dependencias
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-arm-none-eabi python3-pip git
-
-      - name: Instalar QMK CLI
-        run: |
-          pip3 install qmk
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          sudo apt-get install -y \
+            gcc-arm-none-eabi \
+            python3-pip \
+            python3-setuptools \
+            git \
+            make
 
       - name: Clonar QMK firmware
         run: |
           git clone --depth 1 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
           cd ~/qmk_firmware
           git submodule update --init --recursive --depth 1
-          pip3 install -r ~/qmk_firmware/requirements.txt
+          sudo pip3 install -r requirements.txt
 
       - name: Copiar teclado a QMK
         run: |
           mkdir -p ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default
-          cp config.h                        ~/qmk_firmware/keyboards/replicazeron24k/
-          cp rules.mk                        ~/qmk_firmware/keyboards/replicazeron24k/
-          cp replicazeron24k.h               ~/qmk_firmware/keyboards/replicazeron24k/
-          cp info.json                       ~/qmk_firmware/keyboards/replicazeron24k/
-          cp keymaps/default/keymap.c        ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
+          cp config.h                     ~/qmk_firmware/keyboards/replicazeron24k/
+          cp rules.mk                     ~/qmk_firmware/keyboards/replicazeron24k/
+          cp replicazeron24k.h            ~/qmk_firmware/keyboards/replicazeron24k/
+          cp info.json                    ~/qmk_firmware/keyboards/replicazeron24k/
+          cp keymaps/default/keymap.c     ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
 
       - name: Compilar firmware
         run: |
           cd ~/qmk_firmware
-          PATH="$HOME/.local/bin:$PATH" \
-          QMK_HOME="$HOME/qmk_firmware" \
-          python3 -m qmk compile -kb replicazeron24k -km default
+          make replicazeron24k:default 2>&1
 
       - name: Buscar firmware generado
+        if: always()
         run: |
-          find ~/qmk_firmware -name "*.bin" -o -name "*.hex" -o -name "*.uf2" 2>/dev/null || true
-          ls ~/qmk_firmware/.build/ 2>/dev/null || echo "Sin archivos en .build"
+          find ~/qmk_firmware -name "*.bin" -o -name "*.hex" 2>/dev/null || true
 
       - name: Subir firmware
         uses: actions/upload-artifact@v4
