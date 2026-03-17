@@ -41,7 +41,9 @@ jobs:
 
       - name: Compilar firmware
         run: |
+          export QMK_HOME=~/qmk_firmware
           cd ~/qmk_firmware
+          qmk config user.qmk_home=~/qmk_firmware
           qmk compile -kb replicazeron24k -km default
 
       - name: Buscar firmware generado
