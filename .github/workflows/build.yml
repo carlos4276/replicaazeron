@@ -18,12 +18,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi python3-pip git make
 
-      - name: Clonar QMK firmware versión estable
+      - name: Clonar QMK firmware
         run: |
           git clone --depth 1 --branch 0.22.14 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
           cd ~/qmk_firmware
           git submodule update --init --recursive --depth 1
-          sudo pip3 install -r requirements.txt
+
+      - name: Instalar QMK y setup
+        run: |
+          cd ~/qmk_firmware
+          sudo pip3 install -r requirements.txt --break-system-packages 2>/dev/null || sudo pip3 install -r requirements.txt
+          sudo pip3 install qmk --break-system-packages 2>/dev/null || sudo pip3 install qmk
+          export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+          which qmk || true
+          qmk setup -H ~/qmk_firmware --yes || true
 
       - name: Copiar teclado a QMK
         run: |
@@ -36,6 +44,7 @@ jobs:
 
       - name: Compilar firmware
         run: |
+          export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
           cd ~/qmk_firmware
           make replicazeron24k:default
 
