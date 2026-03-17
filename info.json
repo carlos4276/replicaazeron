@@ -1,5 +1,6 @@
 {
     "keyboard_name": "replicazeron24k",
+    "board": "GENERIC_STM32_F103",
     "manufacturer": "Carlos4276",
     "url": "",
     "maintainer": "carlos4276",
