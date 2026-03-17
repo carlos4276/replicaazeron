@@ -13,7 +13,7 @@ jobs:
       - name: Consultar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar dependencias del sistema
+      - name: Instalar dependencias
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi python3-pip git make
@@ -23,13 +23,7 @@ jobs:
           git clone --depth 1 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
           cd ~/qmk_firmware
           git submodule update --init --recursive --depth 1
-
-      - name: Instalar QMK y hacer setup
-        run: |
-          cd ~/qmk_firmware
-          sudo pip3 install -r requirements.txt --break-system-packages 2>/dev/null || sudo pip3 install -r requirements.txt
-          sudo pip3 install qmk --break-system-packages 2>/dev/null || sudo pip3 install qmk
-          qmk setup -H ~/qmk_firmware --yes
+          sudo pip3 install -r requirements.txt
 
       - name: Copiar teclado a QMK
         run: |
@@ -40,15 +34,16 @@ jobs:
           cp info.json                    ~/qmk_firmware/keyboards/replicazeron24k/
           cp keymaps/default/keymap.c     ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
 
-      - name: Compilar firmware
+      - name: Compilar firmware con make directo
         run: |
           cd ~/qmk_firmware
-          qmk compile -kb replicazeron24k -km default
+          export PATH="$HOME/.local/bin:$PATH"
+          util/docker_build.sh replicazeron24k:default 2>/dev/null || \
+          make -j4 -C ~/qmk_firmware replicazeron24k:default SKIP_GIT=yes
 
       - name: Buscar firmware generado
         if: always()
-        run: |
-          find ~/qmk_firmware -name "*.bin" -o -name "*.hex" 2>/dev/null || true
+        run: find ~ -name "*.bin" -o -name "*.hex" 2>/dev/null | grep -i replica || true
 
       - name: Subir firmware
         uses: actions/upload-artifact@v4
