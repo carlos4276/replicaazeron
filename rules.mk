@@ -15,5 +15,3 @@ AUDIO_ENABLE           = no
 JOYSTICK_ENABLE        = yes
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = analog_joystick
-
-SRC += analog.c
