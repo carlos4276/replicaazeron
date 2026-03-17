@@ -1,44 +1,47 @@
-name: Build QMK Firmware
+name: Compilación del firmware QMK
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:  # Permite ejecutar manualmente desde GitHub
+    branches: [ main, principal ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repositorio
+      - name: Consultar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar QMK CLI
+      - name: Instalar dependencias
         run: |
-          python3 -m pip install --user qmk
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi python3-pip git
 
-      - name: Setup QMK
+      - name: Instalar QMK CLI
+        run: pip3 install qmk
+
+      - name: Clonar QMK firmware
         run: |
-          qmk setup -H ~/qmk_firmware --yes
+          git clone --depth 1 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
+          cd ~/qmk_firmware
+          git submodule update --init --recursive --depth 1
 
       - name: Copiar teclado a QMK
         run: |
           mkdir -p ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default
-          cp config.h          ~/qmk_firmware/keyboards/replicazeron24k/
-          cp rules.mk          ~/qmk_firmware/keyboards/replicazeron24k/
-          cp replicazeron24k.h ~/qmk_firmware/keyboards/replicazeron24k/
+          cp config.h              ~/qmk_firmware/keyboards/replicazeron24k/
+          cp rules.mk              ~/qmk_firmware/keyboards/replicazeron24k/
+          cp replicazeron24k.h     ~/qmk_firmware/keyboards/replicazeron24k/
+          cp info.json             ~/qmk_firmware/keyboards/replicazeron24k/
           cp keymaps/default/keymap.c ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
-          cp info.json         ~/qmk_firmware/keyboards/replicazeron24k/
 
-      - name: Compilar firmware
+      - name: Compilar firmware con make
         run: |
           cd ~/qmk_firmware
-          qmk compile -kb replicazeron24k -km default
+          make replicazeron24k:default
 
-      - name: Subir firmware como artefacto
+      - name: Subir firmware
         uses: actions/upload-artifact@v4
         with:
           name: replicazeron24k-firmware
