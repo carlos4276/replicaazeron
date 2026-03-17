@@ -58,6 +58,6 @@ jobs:
         with:
           name: replicazeron24k-firmware
           path: |
-            ~/qmk_firmware/.build/*.bin
-            ~/qmk_firmware/.build/*.hex
+            /home/runner/qmk_firmware/.build/replicazeron24k_default.bin
+            /home/runner/qmk_firmware/.build/replicazeron24k_default.hex
           if-no-files-found: error
