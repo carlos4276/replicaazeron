@@ -30,7 +30,7 @@ jobs:
           cp config.h          ~/qmk_firmware/keyboards/replicazeron24k/
           cp rules.mk          ~/qmk_firmware/keyboards/replicazeron24k/
           cp replicazeron24k.h ~/qmk_firmware/keyboards/replicazeron24k/
-          cp keymap.c          ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
+          cp keymaps/default/keymap.c ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
 
       - name: Compilar firmware
         run: |
