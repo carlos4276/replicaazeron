@@ -1,5 +1,5 @@
 MCU        = STM32F103
-BOOTLOADER = stm32-dfu
+BOOTLOADER = stm32duino
 
 CUSTOM_MATRIX = no
 
