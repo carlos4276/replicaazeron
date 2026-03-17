@@ -37,10 +37,6 @@
       B13, B14 }          \
 }
 
-// Todas las teclas activan con GND (pull-up interno)
-#define DIRECT_PINS_RIGHT
-#define MATRIX_COL_PINS_RIGHT
-#undef  DIRECT_PINS_RIGHT
 
 // --- JOYSTICK ANALÓGICO (thumbstick) ---
 #define ANALOG_JOYSTICK_X_AXIS_PIN      PAL_LINE(GPIOA, 6)
@@ -81,3 +77,4 @@
 
 // --- Pull-up en todos los pines de teclas ---
 #define MATRIX_IO_DELAY 30
+#define PLATFORM_SUPPORTS_HARDWARE_DEBOUNCE
