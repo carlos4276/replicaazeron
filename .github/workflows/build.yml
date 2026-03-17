@@ -13,22 +13,23 @@ jobs:
       - name: Consultar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar dependencias
+      - name: Instalar dependencias del sistema
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            gcc-arm-none-eabi \
-            python3-pip \
-            python3-setuptools \
-            git \
-            make
+          sudo apt-get install -y gcc-arm-none-eabi python3-pip git make
 
       - name: Clonar QMK firmware
         run: |
           git clone --depth 1 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
           cd ~/qmk_firmware
           git submodule update --init --recursive --depth 1
-          sudo pip3 install -r requirements.txt
+
+      - name: Instalar QMK y hacer setup
+        run: |
+          cd ~/qmk_firmware
+          sudo pip3 install -r requirements.txt --break-system-packages 2>/dev/null || sudo pip3 install -r requirements.txt
+          sudo pip3 install qmk --break-system-packages 2>/dev/null || sudo pip3 install qmk
+          qmk setup -H ~/qmk_firmware --yes
 
       - name: Copiar teclado a QMK
         run: |
@@ -42,7 +43,7 @@ jobs:
       - name: Compilar firmware
         run: |
           cd ~/qmk_firmware
-          make replicazeron24k:default 2>&1
+          qmk compile -kb replicazeron24k -km default
 
       - name: Buscar firmware generado
         if: always()
