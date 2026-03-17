@@ -18,9 +18,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc-arm-none-eabi python3-pip git make
 
-      - name: Clonar QMK firmware
+      - name: Clonar QMK firmware versión estable
         run: |
-          git clone --depth 1 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
+          git clone --depth 1 --branch 0.22.14 https://github.com/qmk/qmk_firmware.git ~/qmk_firmware
           cd ~/qmk_firmware
           git submodule update --init --recursive --depth 1
           sudo pip3 install -r requirements.txt
@@ -34,16 +34,14 @@ jobs:
           cp info.json                    ~/qmk_firmware/keyboards/replicazeron24k/
           cp keymaps/default/keymap.c     ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
 
-      - name: Compilar firmware con make directo
+      - name: Compilar firmware
         run: |
           cd ~/qmk_firmware
-          export PATH="$HOME/.local/bin:$PATH"
-          util/docker_build.sh replicazeron24k:default 2>/dev/null || \
-          make -j4 -C ~/qmk_firmware replicazeron24k:default SKIP_GIT=yes
+          make replicazeron24k:default
 
       - name: Buscar firmware generado
         if: always()
-        run: find ~ -name "*.bin" -o -name "*.hex" 2>/dev/null | grep -i replica || true
+        run: find ~/qmk_firmware -name "*.bin" -o -name "*.hex" 2>/dev/null || true
 
       - name: Subir firmware
         uses: actions/upload-artifact@v4
