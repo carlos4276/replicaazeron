@@ -1,26 +1,19 @@
-# =============================================================
-#  REPLICAZERON 24K - rules.mk
-#  Blue Pill STM32F103 - Pines directos (sin matriz)
-# =============================================================
-
 MCU        = STM32F103
 BOOTLOADER = stm32duino
 
-# --- PINES DIRECTOS (QMK maneja la matriz internamente) ---
 CUSTOM_MATRIX = no
 
-# --- Build Options ---
-BOOTMAGIC_ENABLE       = yes      # Bootmagic lite
-MOUSEKEY_ENABLE        = yes      # Control del mouse con teclado
-EXTRAKEY_ENABLE        = yes      # Audio/media keys
+BOOTMAGIC_ENABLE       = yes
+MOUSEKEY_ENABLE        = yes
+EXTRAKEY_ENABLE        = yes
 CONSOLE_ENABLE         = no
 COMMAND_ENABLE         = no
-NKRO_ENABLE            = yes      # N-Key Rollover
+NKRO_ENABLE            = yes
 BACKLIGHT_ENABLE       = no
 RGBLIGHT_ENABLE        = no
 AUDIO_ENABLE           = no
-JOYSTICK_ENABLE        = yes      # HID Joystick analógico
-POINTING_DEVICE_ENABLE = yes      # Para mover el mouse con el joystick
+JOYSTICK_ENABLE        = yes
+POINTING_DEVICE_ENABLE = yes
+POINTING_DEVICE_DRIVER = analog_joystick
 
-# --- Archivos fuente personalizados ---
 SRC += analog.c
