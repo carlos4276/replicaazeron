@@ -1,0 +1,45 @@
+name: Build QMK Firmware
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Permite ejecutar manualmente desde GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar QMK CLI
+        run: |
+          python3 -m pip install --user qmk
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Setup QMK
+        run: |
+          qmk setup -H ~/qmk_firmware --yes
+
+      - name: Copiar teclado a QMK
+        run: |
+          mkdir -p ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default
+          cp config.h          ~/qmk_firmware/keyboards/replicazeron24k/
+          cp rules.mk          ~/qmk_firmware/keyboards/replicazeron24k/
+          cp replicazeron24k.h ~/qmk_firmware/keyboards/replicazeron24k/
+          cp keymap.c          ~/qmk_firmware/keyboards/replicazeron24k/keymaps/default/
+
+      - name: Compilar firmware
+        run: |
+          cd ~/qmk_firmware
+          qmk compile -kb replicazeron24k -km default
+
+      - name: Subir firmware como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: replicazeron24k-firmware
+          path: ~/qmk_firmware/.build/replicazeron24k_default.bin
+          if-no-files-found: error
